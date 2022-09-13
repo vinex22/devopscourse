@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment{
         DOCKERHUB_CREDS = credentials('AZ')
+
     }
     stages {
         stage('Clone Repo') {
@@ -11,13 +12,7 @@ pipeline {
             }
         }
         
-        stage('ACR Get') {
-            steps {
-                //sh 'docker login -u $DOCKERHUB_CREDS_USR -p $DOCKERHUB_CREDS_PSW' (this will leave the password visible)
-                sh 'acr_name = $(az acr list --resource-group vinex22 --query [0].name -o tsv)' 
-                           
-                }
-            }
+       
         stage('ACR Build &  Push') {
             steps {
 		//sh 'docker push raj80dockerid/jenkinstest' (this will use the tag latest)    
