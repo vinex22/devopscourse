@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    environment{
+        DOCKERHUB_CREDS = credentials('dockerhub')
+    }
+    stages {
+        stage('Clone Repo') {
+            steps {
+                checkout scm
+                sh 'ls *'
+            }
+        }
+        
+        stage('ACR Get') {
+            steps {
+                //sh 'docker login -u $DOCKERHUB_CREDS_USR -p $DOCKERHUB_CREDS_PSW' (this will leave the password visible)
+                sh 'acr_name = $(az acr list --resource-group vinex22 --query [0].name -o tsv)' 
+                           
+                }
+            }
+        stage('ACR Build &  Push') {
+            steps {
+		//sh 'docker push raj80dockerid/jenkinstest' (this will use the tag latest)    
+                sh 'az acr build -t vinex22/pythontest:$BUILD_NUMBER -r $acr_name .'
+                }
+            }
+        }
+    post {
+		always {
+			//sh 'docker logout'
+		}
+	 }
+    }
+
