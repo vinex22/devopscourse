@@ -22,7 +22,7 @@ pipeline {
             steps {
 		//sh 'docker push raj80dockerid/jenkinstest' (this will use the tag latest)    
                 sh 'acr_name = $(az acr list --resource-group vinex22 --query [0].name -o tsv)' 
-                sh 'az acr build -t vinex22/pythontest:$BUILD_NUMBER -r vinex22 ./pushdockerimageAZ/'
+                sh 'az acr build -t vinex22/pythontest:$BUILD_NUMBER -r $ACR_Name ./pushdockerimageAZ/'
                 }
             }
         }
