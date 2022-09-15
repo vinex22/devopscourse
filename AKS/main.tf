@@ -17,25 +17,22 @@ provider "azurerm" {
 
 
 locals {
-  resource_group="app-grp"
-  location="North Europe"
+  resource_group="vinex2212"
+  location="East Asia"
 }
 
 data "azurerm_subnet" "SubnetA" {
   name                 = "SubnetA"
-  virtual_network_name = "app-network"
+  virtual_network_name = azurerm_virtual_network.app_network.name
   resource_group_name  = local.resource_group
 }
 
-resource "azurerm_resource_group" "app_grp"{
-  name=local.resource_group
-  location=local.location
-}
+
 
 resource "azurerm_virtual_network" "app_network" {
   name                = "app-network"
   location            = local.location
-  resource_group_name = azurerm_resource_group.app_grp.name
+  resource_group_name = local.resource_group
   address_space       = ["10.0.0.0/16"]
 
   subnet {
